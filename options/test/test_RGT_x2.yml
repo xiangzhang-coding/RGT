@@ -60,34 +60,34 @@ datasets:
 # network structures
 network_g:
   type: RGT
-  upscale: 2
-  in_chans: 3
-  img_size: 64
-  img_range: 1.
-  depth: [6,6,6,6,6,6,6,6]
-  embed_dim: 180
-  num_heads: [6,6,6,6,6,6,6,6]
-  mlp_ratio: 2
-  resi_connection: '1conv'
-  split_size: [8,32]
-  c_ratio: 0.5
+  upscale: 2     # 放大倍数
+  in_chans: 3    #输入通道数，RGB通常为3
+  img_size: 64    #这里有点疑惑，通常输入图片尺寸不是固定的。
+  img_range: 1.     #表示像素归一化到0-1之间，所以这里为1。
+  depth: [6,6,6,6,6,6,6,6]       #每一组 Transformer 块的深度，列表中每个数字表示某个阶段包含的 Transformer 块数量
+  embed_dim: 180      #嵌入维度（embedding dimension），通常用于线性层或多头注意力机制的特征表示维度。这里每个输入块被映射到一个 180 维的向量空间。
+  num_heads: [6,6,6,6,6,6,6,6]      #多头注意力机制的头数，每个阶段有 6 个头。
+  mlp_ratio: 2      #MLP 比例，表示 Transformer 中全连接层的隐藏维度是嵌入维度的倍数。例如，如果 embed_dim = 180，则隐藏维度为 180 × 2 = 360。
+  resi_connection: '1conv'      #残差连接方式，这里指定为单卷积（1conv）
+  split_size: [8,32]      #分割尺寸，用于划分输入特征图的块大小。8 和 32 可能分别对应网络的某些分割操作或阶段。
+  c_ratio: 0.5      #通道比例（channel ratio），可能用于网络中某些通道缩减操作（如注意力机制或通道分组）。
 
 # path
 path:
   pretrain_network_g: experiments/pretrained_models/RGT/RGT_x2.pth
-  strict_load_g: True
+  strict_load_g: True     #指定加载模型时是否严格匹配权重和网络结构。True 要求预训练模型的权重和当前网络结构完全一致。
 
 # validation settings
-val:
+val:      #表示验证阶段的配置。
   save_img: True
-  suffix: ~  # add suffix to saved images, if None, use exp name
-  use_chop: False  # True to save memory, if img too large
+  suffix: ~  # add suffix to saved images, if None, use exp name 。        ~（或 None） 表示不添加后缀，而是直接使用实验名称（exp name）作为文件名的一部分。
+  use_chop: False  # True to save memory, if img too large        控制是否使用“切分策略”（chop）处理大图片，以减少显存占用。
 
   metrics:
     psnr: # metric name, can be arbitrary
-      type: calculate_psnr
-      crop_border: 2
-      test_y_channel: True
+      type: calculate_psnr        #指定计算 PSNR 的方法或函数名称。
+      crop_border: 2        #在计算 PSNR 时，去掉边界像素的数量。
+      test_y_channel: True        #表示是否只在 Y 通道（亮度通道）上计算 PSNR。原因：在图像处理任务中，Y 通道的亮度信息往往比色彩信息更重要。将评估重点放在 Y 通道可以更准确地反映图像质量。
     ssim:
       type: calculate_ssim
       crop_border: 2

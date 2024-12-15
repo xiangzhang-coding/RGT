@@ -17,16 +17,16 @@ datasets:
     io_backend:
       type: disk
 
-    gt_size: 128
-    use_hflip: True
-    use_rot: True
+    gt_size: 128      #对高分辨率图像裁剪为 128x128 的小块，以增加数据多样性。原因不明白。
+    use_hflip: True     #启用水平翻转作为数据增强方式。
+    use_rot: True       #启用旋转作为数据增强方式。
 
     # data loader
-    use_shuffle: True
-    num_worker_per_gpu: 16
-    batch_size_per_gpu: 8
-    dataset_enlarge_ratio: 1
-    prefetch_mode: ~
+    use_shuffle: True     #是否在每个训练周期 (epoch) 对数据进行随机打乱。
+    num_worker_per_gpu: 16      #每个 GPU 使用的数据加载线程数。
+    batch_size_per_gpu: 8     #每个 GPU 的批量大小。
+    dataset_enlarge_ratio: 1      #数据集扩展比例。1：表示不扩展数据集。
+    prefetch_mode: ~      #指定数据预取模式。    ~ 或 None：不使用数据预取。
 
   val:
     task: SR
@@ -55,35 +55,35 @@ network_g:
 
 # path
 path:
-  pretrain_network_g: ~
+  pretrain_network_g: ~     #指定生成器（network_g）预训练模型的路径。  ~ 表示未设置路径，模型将从头开始训练
   strict_load_g: true
-  resume_state: ~
+  resume_state: ~     #指定训练恢复状态的路径。  ~ 表示不恢复训练状态，训练将从头开始。
 
 # training settings
 train:
   optim_g:
     type: Adam
-    lr: !!float 2e-4
-    weight_decay: 0
-    betas: [0.9, 0.99]
+    lr: !!float 2e-4      #指定学习率为 2e-4（即 0.0002）。!!float 表示强制解析为浮点数。
+    weight_decay: 0       #设置权重衰减（L2 正则化）为 0。权重衰减用于防止过拟合，但在某些任务中可能无需设置。
+    betas: [0.9, 0.99]      #设置 Adam 优化器的动量参数。beta1=0.9：控制一阶矩估计（平均梯度）的动量。beta2=0.99：控制二阶矩估计（梯度平方均值）的动量。
 
   scheduler:
-    type: MultiStepLR
-    milestones: [250000, 400000, 450000, 475000]
-    gamma: 0.5
+    type: MultiStepLR     #使用多步学习率调度器（MultiStepLR）。
+    milestones: [250000, 400000, 450000, 475000]      #指定的训练迭代数（milestones）时，调整学习率。逐步降低学习率，帮助模型收敛到更优解。
+    gamma: 0.5      #每次调整学习率时，将学习率乘以 0.5。
 
   total_iter: 500000
-  warmup_iter: -1  # no warm up
+  warmup_iter: -1  # no warm up     #学习率预热可以在训练开始时逐渐提高学习率，避免模型参数剧烈更新。
 
   # losses
   pixel_opt:
     type: L1Loss
     loss_weight: 1.0
-    reduction: mean
+    reduction: mean       #对损失值取平均值。
 
 # validation settings
 val:
-  val_freq: !!float 5e3
+  val_freq: !!float 5e3    #每 5000 次训练迭代后进行一次验证。
   save_img: False
 
   metrics:
@@ -94,14 +94,15 @@ val:
 
 # logging settings
 logger:
-  print_freq: 200
-  save_checkpoint_freq: !!float 5e3
-  use_tb_logger: True
+  print_freq: 200       #每隔 200 次训练迭代打印一次日志信息。控制训练过程中的输出频率，用于监控训练指标（如损失、学习率等）。
+  save_checkpoint_freq: !!float 5e3     #每 5000 次迭代保存一次模型检查点。
+  use_tb_logger: True       #开启 TensorBoard 日志记录。     tensorboard --logdir=./tb_logger
+
   wandb:
     project: ~
     resume_id: ~
 
 # dist training settings
 dist_params:
-  backend: nccl
+  backend: nccl       #NCCL（NVIDIA Collective Communications Library）：NVIDIA 提供的高效通信库，支持 GPU 间的高效通信，适合多 GPU 和多节点训练。
   port: 29500

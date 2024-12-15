@@ -1,0 +1,391 @@
+ python setup.py develop
+C:\Users\zxhom\.conda\envs\RGT\lib\site-packages\setuptools\__init__.py:94: _DeprecatedInstaller: setuptools.installer and fetch_build_eggs are deprecated.
+!!
+
+        ********************************************************************************
+        Requirements should be satisfied by a PEP 517 installer.
+        If you are using pip, you can try `pip install --use-pep517`.
+        ********************************************************************************
+
+!!
+  dist.fetch_build_eggs(dist.setup_requires)
+running develop
+C:\Users\zxhom\.conda\envs\RGT\lib\site-packages\setuptools\command\develop.py:41: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+C:\Users\zxhom\.conda\envs\RGT\lib\site-packages\setuptools\_distutils\cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+creating basicsr.egg-info
+writing basicsr.egg-info\PKG-INFO
+writing dependency_links to basicsr.egg-info\dependency_links.txt
+writing requirements to basicsr.egg-info\requires.txt
+writing top-level names to basicsr.egg-info\top_level.txt
+writing manifest file 'basicsr.egg-info\SOURCES.txt'
+reading manifest file 'basicsr.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'basicsr.egg-info\SOURCES.txt'
+C:\Users\zxhom\.conda\envs\RGT\lib\site-packages\torch\utils\cpp_extension.py:370: UserWarning: Attempted to use ninja as the BuildExtension backend but we could not find ninja.. Falling back to using the slow distutils backend.
+  warnings.warn(msg.format('we could not find ninja.'))
+running build_ext
+Creating c:\users\zxhom\.conda\envs\rgt\lib\site-packages\basicsr.egg-link (link to .)
+Adding basicsr 1.3.5 to easy-install.pth file
+
+Installed c:\users\zxhom\documents\github\rgt
+Processing dependencies for basicsr==1.3.5
+Searching for setuptools>=41.0.0
+Reading https://pypi.org/simple/setuptools/
+Downloading https://files.pythonhosted.org/packages/55/21/47d163f615df1d30c094f6c8bbb353619274edccf0327b185cc2493c2c33/setuptools-75.6.0-py3-none-any.whl#sha256=ce74b49e8f7110f9bf04883b730f4765b774ef3ef28f722cce7c273d253aaf7d
+Best match: setuptools 75.6.0
+Processing setuptools-75.6.0-py3-none-any.whl
+Installing setuptools-75.6.0-py3-none-any.whl to c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Adding setuptools 75.6.0 to easy-install.pth file
+
+Installed c:\users\zxhom\.conda\envs\rgt\lib\site-packages\setuptools-75.6.0-py3.8.egg
+Searching for h5py==3.11.0
+Best match: h5py 3.11.0
+Adding h5py 3.11.0 to easy-install.pth file
+detected new path './setuptools-75.6.0-py3.8.egg'
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for einops==0.8.0
+Best match: einops 0.8.0
+Adding einops 0.8.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for timm==1.0.11
+Best match: timm 1.0.11
+Adding timm 1.0.11 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for yapf==0.43.0
+Best match: yapf 0.43.0
+Adding yapf 0.43.0 to easy-install.pth file
+Installing yapf-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing yapf.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing yapf-diff-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing yapf-diff.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for tqdm==4.67.0
+Best match: tqdm 4.67.0
+Adding tqdm 4.67.0 to easy-install.pth file
+Installing tqdm-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tqdm.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for torchvision==0.10.0+cu111
+Best match: torchvision 0.10.0+cu111
+Adding torchvision 0.10.0+cu111 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for torch==1.9.0+cu111
+Best match: torch 1.9.0+cu111
+Adding torch 1.9.0+cu111 to easy-install.pth file
+Installing convert-caffe2-to-onnx-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing convert-caffe2-to-onnx.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing convert-onnx-to-caffe2-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing convert-onnx-to-caffe2.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for tb-nightly==2.14.0a20230808
+Best match: tb-nightly 2.14.0a20230808
+Adding tb-nightly 2.14.0a20230808 to easy-install.pth file
+Installing tensorboard-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tensorboard.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for scipy==1.10.1
+Best match: scipy 1.10.1
+Adding scipy 1.10.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for scikit-image==0.21.0
+Best match: scikit-image 0.21.0
+Adding scikit-image 0.21.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for requests==2.32.3
+Best match: requests 2.32.3
+Adding requests 2.32.3 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for PyYAML==6.0.2
+Best match: PyYAML 6.0.2
+Adding PyYAML 6.0.2 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for pillow==10.4.0
+Best match: pillow 10.4.0
+Adding pillow 10.4.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for opencv-python==4.10.0.84
+Best match: opencv-python 4.10.0.84
+Adding opencv-python 4.10.0.84 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for numpy==1.24.4
+Best match: numpy 1.24.4
+Adding numpy 1.24.4 to easy-install.pth file
+Installing f2py-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing f2py.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for lmdb==1.5.1
+Best match: lmdb 1.5.1
+Adding lmdb 1.5.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for future==1.0.0
+Best match: future 1.0.0
+Adding future 1.0.0 to easy-install.pth file
+Installing futurize-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing futurize.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pasteurize-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pasteurize.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for addict==2.4.0
+Best match: addict 2.4.0
+Adding addict 2.4.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for safetensors==0.4.5
+Best match: safetensors 0.4.5
+Adding safetensors 0.4.5 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for huggingface-hub==0.26.2
+Best match: huggingface-hub 0.26.2
+Adding huggingface-hub 0.26.2 to easy-install.pth file
+Installing huggingface-cli-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing huggingface-cli.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for tomli==2.1.0
+Best match: tomli 2.1.0
+Adding tomli 2.1.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for platformdirs==4.3.6
+Best match: platformdirs 4.3.6
+Adding platformdirs 4.3.6 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for colorama==0.4.6
+Best match: colorama 0.4.6
+Adding colorama 0.4.6 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for typing-extensions==4.12.2
+Best match: typing-extensions 4.12.2
+Adding typing-extensions 4.12.2 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages\setuptools\_vendor
+Searching for wheel==0.45.0
+Best match: wheel 0.45.0
+Adding wheel 0.45.0 to easy-install.pth file
+detected new path './setuptools/_vendor'
+Installing wheel-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing wheel.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for werkzeug==3.0.6
+Best match: werkzeug 3.0.6
+Adding werkzeug 3.0.6 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for tensorboard-data-server==0.7.2
+Best match: tensorboard-data-server 0.7.2
+Adding tensorboard-data-server 0.7.2 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for protobuf==5.28.3
+Best match: protobuf 5.28.3
+Adding protobuf 5.28.3 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for Markdown==3.7
+Best match: Markdown 3.7
+Adding Markdown 3.7 to easy-install.pth file
+Installing markdown_py-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing markdown_py.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for google-auth-oauthlib==1.0.0
+Best match: google-auth-oauthlib 1.0.0
+Adding google-auth-oauthlib 1.0.0 to easy-install.pth file
+Installing google-oauthlib-tool-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing google-oauthlib-tool.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for google-auth==2.36.0
+Best match: google-auth 2.36.0
+Adding google-auth 2.36.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for grpcio==1.68.0
+Best match: grpcio 1.68.0
+Adding grpcio 1.68.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for absl-py==2.1.0
+Best match: absl-py 2.1.0
+Adding absl-py 2.1.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for lazy-loader==0.4
+Best match: lazy-loader 0.4
+Adding lazy-loader 0.4 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for packaging==24.2
+Best match: packaging 24.2
+Adding packaging 24.2 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for PyWavelets==1.4.1
+Best match: PyWavelets 1.4.1
+Adding PyWavelets 1.4.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for tifffile==2023.7.10
+Best match: tifffile 2023.7.10
+Adding tifffile 2023.7.10 to easy-install.pth file
+Installing lsm2bin-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing lsm2bin.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tiff2fsspec-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tiff2fsspec.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tiffcomment-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tiffcomment.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tifffile-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing tifffile.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for imageio==2.35.1
+Best match: imageio 2.35.1
+Adding imageio 2.35.1 to easy-install.pth file
+Installing imageio_download_bin-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing imageio_download_bin.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing imageio_remove_bin-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing imageio_remove_bin.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for networkx==3.1
+Best match: networkx 3.1
+Adding networkx 3.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for certifi==2024.8.30
+Best match: certifi 2024.8.30
+Adding certifi 2024.8.30 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for urllib3==2.2.3
+Best match: urllib3 2.2.3
+Adding urllib3 2.2.3 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for idna==3.10
+Best match: idna 3.10
+Adding idna 3.10 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for charset-normalizer==3.4.0
+Best match: charset-normalizer 3.4.0
+Adding charset-normalizer 3.4.0 to easy-install.pth file
+Installing normalizer-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing normalizer.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for fsspec==2024.10.0
+Best match: fsspec 2024.10.0
+Adding fsspec 2024.10.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for filelock==3.16.1
+Best match: filelock 3.16.1
+Adding filelock 3.16.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for MarkupSafe==2.1.5
+Best match: MarkupSafe 2.1.5
+Adding MarkupSafe 2.1.5 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for importlib-metadata==8.5.0
+Best match: importlib-metadata 8.5.0
+Adding importlib-metadata 8.5.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for requests-oauthlib==2.0.0
+Best match: requests-oauthlib 2.0.0
+Adding requests-oauthlib 2.0.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for rsa==4.9
+Best match: rsa 4.9
+Adding rsa 4.9 to easy-install.pth file
+Installing pyrsa-decrypt-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-decrypt.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-encrypt-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-encrypt.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-keygen-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-keygen.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-priv2pub-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-priv2pub.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-sign-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-sign.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-verify-script.py script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+Installing pyrsa-verify.exe script to C:\Users\zxhom\.conda\envs\RGT\Scripts
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for pyasn1-modules==0.4.1
+Best match: pyasn1-modules 0.4.1
+Adding pyasn1-modules 0.4.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for cachetools==5.5.0
+Best match: cachetools 5.5.0
+Adding cachetools 5.5.0 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for zipp==3.20.2
+Best match: zipp 3.20.2
+Adding zipp 3.20.2 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for oauthlib==3.2.2
+Best match: oauthlib 3.2.2
+Adding oauthlib 3.2.2 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Searching for pyasn1==0.6.1
+Best match: pyasn1 0.6.1
+Adding pyasn1 0.6.1 to easy-install.pth file
+
+Using c:\users\zxhom\.conda\envs\rgt\lib\site-packages
+Finished processing dependencies for basicsr==1.3.5
+(RGT)

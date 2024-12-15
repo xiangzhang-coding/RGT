@@ -1,18 +1,18 @@
-addict
-future
-lmdb
+addict      #字典操作
+future      #兼容python2和3
+lmdb        #键值存储嵌入式数据库
 numpy>=1.17
 opencv-python
-Pillow
-pyyaml
-requests
+Pillow      #PIL的分支与增强版，实现图像处理
+pyyaml      #Python YAML 解析库
+requests    #HTTP 请求库
 scikit-image
 scipy
-tb-nightly
+tb-nightly      #TensorBoard 的预发布版本
 torch==1.9.0+cu111
 torchvision==0.10.0+cu111
 tqdm
-yapf
-timm 
-einops
-h5py
+yapf        #Python 代码格式化工具
+timm        #timm (PyTorch Image Models) 是一个 PyTorch 图像模型库，由 Ross Wightman 开发，包含大量 预训练模型、模型结构与训练工具，主要用于 图像分类、目标检测和分割任务。timm 支持最新的 深度学习架构，如 ViT、Swin Transformer、EfficientNet、ConvNeXt 等。
+einops      #高效的张量操作工具库
+h5py        #操作 HDF5 文件

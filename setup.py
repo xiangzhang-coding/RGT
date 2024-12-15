@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+# find_packages 自动发现当前项目中的所有 Python 包，并将其添加到安装列表中; setup 用于定义包的元信息和安装选项，如包名、版本、依赖项等。
 from setuptools import find_packages, setup
 
 import os
