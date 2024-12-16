@@ -1,10 +1,16 @@
 import torch
-import torch.nn as nn
-import torch.utils.checkpoint as checkpoint
+import torch.nn as nn           #提供神经网络模块（如卷积层、激活函数、损失函数等）。
+import torch.utils.checkpoint as checkpoint         #用于 梯度检查点，可减少内存使用，代价是稍微增加计算时间。
 from torch import Tensor
 from torch.nn import functional as F
 
+
+#（PyTorch Image Models）：一个包含大量深度学习模型组件的库，特别适合图像任务。
+# DropPath：随机丢弃路径（Path Dropout），一种正则化技术，用于提升模型的泛化能力，常用于 Transformer 模型。
+# trunc_normal_：初始化方法，用于生成截断正态分布的随机数。
 from timm.models.layers import DropPath, trunc_normal_
+
+# einops（Elegant Input-Output）：一个强大的张量操作库，用于简化复杂的张量变换。
 from einops.layers.torch import Rearrange
 from einops import rearrange, repeat
 
@@ -13,9 +19,14 @@ import numpy as np
 
 import random
 
+# ARCH_REGISTRY：BasicSR 的模型注册机制，用于将新定义的模型注册到框架中，便于动态调用。
 from basicsr.utils.registry import ARCH_REGISTRY
 
 
+
+# 该函数的作用是将输入的图像按照指定的窗口大小（H_sp 和 W_sp）划分为若干小窗口（window），
+# 并将这些窗口重新排列成适合后续处理的格式。这种操作在图像处理中非常常见，
+# 特别是在视觉 Transformer（如 Swin Transformer）中，用于对图像分块后进行特征提取。
 def img2windows(img, H_sp, W_sp):
     """
     Input: Image (B, C, H, W)
@@ -23,6 +34,12 @@ def img2windows(img, H_sp, W_sp):
     """
     B, C, H, W = img.shape
     img_reshape = img.view(B, C, H // H_sp, H_sp, W // W_sp, W_sp)
+    # contiguous 函数的作用是将张量的内存布局转化为连续的内存块。
+    # PyTorch 的张量在内存中存储时，可能是连续的，也可能是非连续的。
+    # permute、transpose 等操作会改变张量的维度顺序，但不会直接改变其底层的物理内存布局。
+    # 这种情况下，张量可能变得非连续。
+    # 连续指的是张量在内存中的元素是按顺序排列的，符合 C 风格（行优先）的存储规则。
+    # 一个张量的 is_contiguous() 方法返回 True 表示该张量是连续的。
     img_perm = img_reshape.permute(0, 2, 4, 3, 5, 1).contiguous().reshape(-1, H_sp* W_sp, C)
     return img_perm
 
@@ -42,11 +59,14 @@ def windows2img(img_splits_hw, H_sp, W_sp, H, W):
 class Gate(nn.Module):
     def __init__(self, dim):
         super().__init__()
+        # dim 输入张量的通道数（C）。
         self.norm = nn.LayerNorm(dim)
+        # groups=dim：使每个通道独立卷积（Depthwise Convolution）
         self.conv = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, groups=dim) # DW Conv
 
     def forward(self, x, H, W):
-        # Split
+        # Split,将输入张量 x 按最后一维（通道维度）均匀分成两部分。
+        # chunk 函数用于将一个张量沿指定的维度分割成若干个子张量。
         x1, x2 = x.chunk(2, dim = -1)
         B, N, C = x.shape
         x2 = self.conv(self.norm(x2).transpose(1, 2).contiguous().view(B, C//2, H, W)).flatten(2).transpose(-1, -2).contiguous()
