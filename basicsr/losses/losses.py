@@ -4,7 +4,7 @@ from torch import autograd as autograd
 from torch import nn as nn
 from torch.nn import functional as F
 
-from basicsr.archs.vgg_arch import VGGFeatureExtractor
+from basicsr.archs.vgg_arch import VGGFeatureExtractor  # 用在感知损失，风格损失，评估生成质量上。
 from basicsr.utils.registry import LOSS_REGISTRY
 from .loss_util import weighted_loss
 
@@ -116,6 +116,7 @@ class CharbonnierLoss(nn.Module):
         return self.loss_weight * charbonnier_loss(pred, target, weight, eps=self.eps, reduction=self.reduction)
 
 
+# Weighted Total Variation Loss
 @LOSS_REGISTRY.register()
 class WeightedTVLoss(L1Loss):
     """Weighted TV loss.

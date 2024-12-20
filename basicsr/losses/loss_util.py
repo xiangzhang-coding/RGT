@@ -1,3 +1,5 @@
+# # 这段代码主要实现了一个灵活的 加权损失函数生成器，
+# # 允许在 PyTorch 中为特定的损失函数动态添加权重和自定义的损失缩减（如 mean、sum 等）。
 import functools
 from torch.nn import functional as F
 

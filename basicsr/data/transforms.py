@@ -3,6 +3,9 @@ import random
 import torch
 
 
+# 对图像进行整除裁剪，使图像的高和宽都可以被指定的缩放因子 scale 整除。
+# 这常用于测试阶段，以确保高质量图像（GT）和低质量图像（LQ）之间的尺寸匹配。
+# 输入图片的尺寸是 长 乘以 宽。
 def mod_crop(img, scale):
     """Mod crop images, used during testing.
 
@@ -23,6 +26,8 @@ def mod_crop(img, scale):
     return img
 
 
+
+# 从高质量（GT）和低质量（LQ）图像中随机裁剪一对匹配的图像块，支持 ndarray 和 Tensor 类型。
 def paired_random_crop(img_gts, img_lqs, gt_patch_size, scale, gt_path=None):
     """Paired random crop. Support Numpy array and Tensor inputs.
 
@@ -91,6 +96,7 @@ def paired_random_crop(img_gts, img_lqs, gt_patch_size, scale, gt_path=None):
     return img_gts, img_lqs
 
 
+# 对图像进行数据增强，包括水平翻转、垂直翻转、以及 90 度旋转，支持光流（flow）的数据增强。
 def augment(imgs, hflip=True, rotation=True, flows=None, return_status=False):
     """Augment: horizontal flips OR rotate (0, 90, 180, 270 degrees).
 
@@ -175,5 +181,5 @@ def img_rotate(img, angle, center=None, scale=1.0):
         center = (w // 2, h // 2)
 
     matrix = cv2.getRotationMatrix2D(center, angle, scale)
-    rotated_img = cv2.warpAffine(img, matrix, (w, h))
+    rotated_img = cv2.warpAffine(img, matrix, (w, h))   #dsize设置为原先大小，可能表示裁剪
     return rotated_img

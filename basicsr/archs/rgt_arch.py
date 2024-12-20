@@ -67,6 +67,7 @@ class Gate(nn.Module):
     def forward(self, x, H, W):
         # Split,将输入张量 x 按最后一维（通道维度）均匀分成两部分。
         # chunk 函数用于将一个张量沿指定的维度分割成若干个子张量。
+        # 这里有个问题，chunk 似乎不能均匀分？？？？？
         x1, x2 = x.chunk(2, dim = -1)
         B, N, C = x.shape
         x2 = self.conv(self.norm(x2).transpose(1, 2).contiguous().view(B, C//2, H, W)).flatten(2).transpose(-1, -2).contiguous()
@@ -102,6 +103,11 @@ class MLP(nn.Module):
         return x
 
 
+
+# 为每个注意力头动态计算位置偏置。通常应用于自注意力机制中，用于改进传统位置编码的表达能力。
+# 使用 输入特征的相对位置信息（如相对位置坐标）计算出与位置相关的偏置项，从而增强模型捕捉空间信息的能力。
+# 在多头注意力机制中，通常需要将位置关系纳入注意力计算中。
+# 传统方法可能通过固定的正弦和余弦位置编码实现，而动态位置偏置可以通过神经网络从数据中自动学习这些偏置。
 class DynamicPosBias(nn.Module):
     # The implementation builds on Crossformer code https://github.com/cheerss/CrossFormer/blob/main/models/crossformer.py
     """ Dynamic Relative Position Bias.
@@ -116,6 +122,7 @@ class DynamicPosBias(nn.Module):
         self.num_heads = num_heads
         self.pos_dim = dim // 4
         self.pos_proj = nn.Linear(2, self.pos_dim)
+        # 这里的网络很奇怪，激活函数出现在线性层前面
         self.pos1 = nn.Sequential(
             nn.LayerNorm(self.pos_dim),
             nn.ReLU(inplace=True),
@@ -141,7 +148,17 @@ class DynamicPosBias(nn.Module):
             pos = self.pos3(self.pos2(self.pos1(self.pos_proj(biases))))
         return pos
 
+# 基于窗口的注意力机制，是现代视觉 Transformer 模型（如 Swin Transformer）的核心组件之一。
+# 实现局部注意力机制，将特征划分为小窗口（Window）后，在每个窗口内执行自注意力计算。
+# 加入动态位置偏置（DynamicPosBias），增强模型对空间位置信息的捕捉能力。
+# 通过窗口化操作减少计算复杂度，相较于全局注意力更高效。
 
+# 核心思想：
+#
+# 图像被划分为多个窗口（每个窗口的大小由 self.H_sp 和 self.W_sp 定义）。
+# 在每个窗口中计算自注意力，不同窗口共享计算逻辑。
+# 动态位置偏置（position_bias）在窗口内建模相对位置关系，并添加到注意力权重中。
+# 支持窗口移位操作，通过遮罩（mask）机制增强跨窗口的信息交互。
 class WindowAttention(nn.Module):
     def __init__(self, dim, idx, split_size=[8,8], dim_out=None, num_heads=6, attn_drop=0., proj_drop=0., qk_scale=None, position_bias=True):
         super().__init__()
@@ -242,7 +259,39 @@ class WindowAttention(nn.Module):
 
         return x
 
+# 核心功能：
+#
+# 实现了一种带有分支（branch）和窗口化注意力机制的网络层。
+# 将输入特征分割成多个子部分（branch），在每个子部分上独立应用窗口注意力。
+# 支持窗口移位操作（shift），增强跨窗口的交互。
+# 通过深度可分离卷积（DW Conv）进一步捕获空间上下文。
 
+# 主要用途：
+#
+# 用于图像超分辨率（Super-Resolution, SR）或图像恢复等任务。
+# 高效地建模局部和跨窗口的特征交互。
+
+
+
+
+# 窗口注意力机制：
+#
+# 使用了 WindowAttention 子模块，对输入特征划分窗口（窗口大小由 split_size 决定），在窗口内计算多头注意力。
+# 移位窗口机制：
+#
+# 通过窗口移位（shift_size），增强了窗口之间的特征交互能力，缓解了普通窗口注意力机制中窗口独立导致的上下文信息不足问题。
+# 遮罩机制（Masking）：
+#
+# 在移位窗口中引入遮罩（calculate_mask 函数），避免窗口边界重叠时的无效计算。
+# 动态位置偏置：
+#
+# 通过动态计算窗口内的相对位置偏置（DynamicPosBias），捕获窗口内部的空间关系。
+# 分支设计：
+#
+# 将特征分为两个分支（H-Rwin 和 V-Rwin），分别计算水平和垂直窗口的注意力，进一步提升特征建模能力。
+# 深度可分离卷积：
+#
+# 使用深度可分离卷积（get_v）捕获额外的空间上下文信息，并将卷积特征与注意力特征融合。
 class L_SA(nn.Module):
     # The implementation builds on CAT code https://github.com/zhengchen1999/CAT/blob/main/basicsr/archs/cat_arch.py
     def __init__(self, dim, num_heads,
@@ -489,7 +538,7 @@ class RG_SA(nn.Module):
 
         return x
 
-
+# 多功能模块，结合了局部和全局注意力、非线性特征建模（MLP）和层级缩放策略。
 class Block(nn.Module):
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0.,
                  attn_drop=0., drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, idx=0, 
@@ -528,7 +577,8 @@ class Block(nn.Module):
 
         return x
 
-
+# ResidualGroup 是一个由多个 Block 堆叠而成的模块，结合了残差连接、局部/全局注意力机制和分割操作，非常适合在高分辨率图像处理任务中使用。
+# 通过灵活的模块化设计，可以根据需求调整模块深度、窗口大小和残差连接类型。
 class ResidualGroup(nn.Module):
 
     def __init__(   self,
@@ -600,7 +650,7 @@ class ResidualGroup(nn.Module):
 
         return x
 
-
+# 实现特征图上采样的模块
 class Upsample(nn.Sequential):
     """Upsample module.
     Args:

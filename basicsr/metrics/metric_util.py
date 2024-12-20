@@ -23,7 +23,7 @@ def reorder_image(img, input_order='HWC'):
     if input_order not in ['HWC', 'CHW']:
         raise ValueError(f"Wrong input_order {input_order}. Supported input_orders are 'HWC' and 'CHW'")
     if len(img.shape) == 2:
-        img = img[..., None]
+        img = img[..., None]        # 这行代码的作用是为 img 添加一个新的维度到最后一个轴。
     if input_order == 'CHW':
         img = img.transpose(1, 2, 0)
     return img
