@@ -111,7 +111,7 @@ def parse_options(root_path, is_train=True):
     if seed is None:
         seed = random.randint(1, 10000)
         opt['manual_seed'] = seed
-    set_random_seed(seed + opt['rank'])
+    set_random_seed(seed + opt['rank'])     #确保不同进程之间的随机性独立
 
     # force to update yml options
     if args.force_yml is not None:

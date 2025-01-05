@@ -13,7 +13,7 @@ def test_pipeline(root_path):
     opt, _ = parse_options(root_path, is_train=False)
 
     torch.backends.cudnn.benchmark = True
-    # torch.backends.cudnn.deterministic = True
+    # torch.backends.cudnn.deterministic = True     为确定的输入大小优化 CUDA 加速库的性能。如果输入大小固定，可以加速计算。
 
     # mkdir and initialize loggers
     make_exp_dirs(opt)
