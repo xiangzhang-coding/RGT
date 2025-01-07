@@ -20,7 +20,7 @@ class SRModel(BaseModel):
 
         # define network
         self.net_g = build_network(opt['network_g'])
-        self.net_g = self.model_to_device(self.net_g)
+        self.net_g = self.model_to_device(self.net_g)   # 似乎没有用到DP和DDP，只是简单把数据移动到了GPU
         self.print_network(self.net_g)
 
         # load pretrained models

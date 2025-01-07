@@ -74,14 +74,15 @@ class CosineAnnealingRestartLR(_LRScheduler):
         last_epoch (int): Used in _LRScheduler. Default: -1.
     """
 
+    # super(CosineAnnealingRestartLR, self).__init__(optimizer, last_epoch) 从末尾移动到了头部
     def __init__(self, optimizer, periods, restart_weights=(1, ), eta_min=0, last_epoch=-1):
+        super(CosineAnnealingRestartLR, self).__init__(optimizer, last_epoch)
         self.periods = periods
         self.restart_weights = restart_weights
         self.eta_min = eta_min
         assert (len(self.periods) == len(
             self.restart_weights)), 'periods and restart_weights should have the same length.'
         self.cumulative_period = [sum(self.periods[0:i + 1]) for i in range(0, len(self.periods))]
-        super(CosineAnnealingRestartLR, self).__init__(optimizer, last_epoch)
 
     def get_lr(self):
         idx = get_position_from_periods(self.last_epoch, self.cumulative_period)

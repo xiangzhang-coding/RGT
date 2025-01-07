@@ -206,7 +206,7 @@ class BaseModel():
         if current_iter == -1:
             current_iter = 'latest'
         save_filename = f'{net_label}_{current_iter}.pth'
-        save_path = os.path.join(self.opt['path']['models'], save_filename)
+        save_path = os.path.join(self.opt['path']['models'], save_filename) # yml 文件 path 下没有 models
 
         net = net if isinstance(net, list) else [net]
         param_key = param_key if isinstance(param_key, list) else [param_key]
@@ -219,7 +219,7 @@ class BaseModel():
             for key, param in state_dict.items():
                 if key.startswith('module.'):  # remove unnecessary 'module.'
                     key = key[7:]
-                state_dict[key] = param.cpu()
+                state_dict[key] = param.cpu() # save to cpu
             save_dict[param_key_] = state_dict
 
         # avoid occasional writing errors
@@ -234,7 +234,7 @@ class BaseModel():
             else:
                 break
             finally:
-                retry -= 1
+                retry -= 1 # 在第二次保存成功时似乎会有bug，finally一般用于释放资源
         if retry == 0:
             logger.warning(f'Still cannot save {save_path}. Just ignore it.')
             # raise IOError(f'Cannot save {save_path}.')
@@ -244,7 +244,7 @@ class BaseModel():
 
         1. Print keys with different names.
         2. If strict=False, print the same key but with different tensor size.
-            It also ignore these keys with different sizes (not load).
+            It also ignores these keys with different sizes (not load).
 
         Args:
             crt_net (torch model): Current network.
@@ -272,7 +272,7 @@ class BaseModel():
                 if crt_net[k].size() != load_net[k].size():
                     logger.warning(f'Size different, ignore [{k}]: crt_net: '
                                    f'{crt_net[k].shape}; load_net: {load_net[k].shape}')
-                    load_net[k + '.ignore'] = load_net.pop(k)
+                    load_net[k + '.ignore'] = load_net.pop(k)  # 给key添加后缀
 
     def load_network(self, net, load_path, strict=True, param_key='params'):
         """Load network.

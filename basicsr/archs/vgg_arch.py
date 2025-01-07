@@ -107,7 +107,7 @@ class VGGFeatureExtractor(nn.Module):
         else:
             vgg_net = getattr(vgg, vgg_type)(pretrained=True)
 
-        features = vgg_net.features[:max_idx + 1]
+        features = vgg_net.features[:max_idx + 1]   # features包括了模型的卷积和池化层
 
         modified_net = OrderedDict()
         for k, v in zip(self.names, features):

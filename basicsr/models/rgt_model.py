@@ -37,7 +37,7 @@ class RGTModel(SRModel):
             if w % patch_size_tmp_w != 0:
                 mod_pad_w = patch_size_tmp_w - w % patch_size_tmp_w
                 
-            img = self.lq
+            img = self.lq   # 下面两行通过翻转实现padding，镜像填充
             img = torch.cat([img, torch.flip(img, [2])], 2)[:, :, :h+mod_pad_h, :]
             img = torch.cat([img, torch.flip(img, [3])], 3)[:, :, :, :w+mod_pad_w]
 
