@@ -15,14 +15,14 @@ class MultiStepRestartLR(_LRScheduler):
             Default: [1].
         last_epoch (int): Used in _LRScheduler. Default: -1.
     """
-    # super(MultiStepRestartLR, self).__init__(optimizer, last_epoch) 从末尾放到了开头
+    # super(MultiStepRestartLR, self).__init__(optimizer, last_epoch) 必须放末尾，否则会报错
     def __init__(self, optimizer, milestones, gamma=0.1, restarts=(0, ), restart_weights=(1, ), last_epoch=-1):
-        super(MultiStepRestartLR, self).__init__(optimizer, last_epoch)
         self.milestones = Counter(milestones)
         self.gamma = gamma
         self.restarts = restarts
         self.restart_weights = restart_weights
         assert len(self.restarts) == len(self.restart_weights), 'restarts and their weights do not match.'
+        super(MultiStepRestartLR, self).__init__(optimizer, last_epoch)
 
     def get_lr(self):
         if self.last_epoch in self.restarts:
