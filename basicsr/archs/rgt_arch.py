@@ -5,10 +5,10 @@ from torch import Tensor
 from torch.nn import functional as F
 
 
-#（PyTorch Image Models）：一个包含大量深度学习模型组件的库，特别适合图像任务。
+#（PyTorch Image Models/timm）：一个包含大量深度学习模型组件的库，特别适合图像任务。
 # DropPath：随机丢弃路径（Path Dropout），一种正则化技术，用于提升模型的泛化能力，常用于 Transformer 模型。
 # trunc_normal_：初始化方法，用于生成截断正态分布的随机数。
-from timm.models.layers import DropPath, trunc_normal_
+from timm.models.layers import DropPath, trunc_normal_      #分别用于实现 随机深度（Stochastic Depth） 和 截断正态分布初始化。
 
 # einops（Elegant Input-Output）：一个强大的张量操作库，用于简化复杂的张量变换。
 from einops.layers.torch import Rearrange
@@ -33,7 +33,7 @@ def img2windows(img, H_sp, W_sp):
     Output: Window Partition (B', N, C)
     """
     B, C, H, W = img.shape
-    img_reshape = img.view(B, C, H // H_sp, H_sp, W // W_sp, W_sp)
+    img_reshape = img.view(B, C, H // H_sp, H_sp, W // W_sp, W_sp)  # view 中 H, W 分别是 H_sp 和 W_sp 的整数倍。
     # contiguous 函数的作用是将张量的内存布局转化为连续的内存块。
     # PyTorch 的张量在内存中存储时，可能是连续的，也可能是非连续的。
     # permute、transpose 等操作会改变张量的维度顺序，但不会直接改变其底层的物理内存布局。
@@ -61,7 +61,7 @@ class Gate(nn.Module):
         super().__init__()
         # dim 输入张量的通道数（C）。
         self.norm = nn.LayerNorm(dim)
-        # groups=dim：使每个通道独立卷积（Depthwise Convolution）
+        # groups=dim(in_channels)：使每个通道独立卷积（Depthwise Convolution）
         self.conv = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, groups=dim) # DW Conv
 
     def forward(self, x, H, W):

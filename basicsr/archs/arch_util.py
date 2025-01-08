@@ -1,16 +1,16 @@
-import collections.abc
+import collections.abc  #抽象基类
 import math
 import torch
 import torchvision
 import warnings
-from distutils.version import LooseVersion
-from itertools import repeat
+from distutils.version import LooseVersion      # 用于比较版本号，已经弃用
+from itertools import repeat        # 重复固定值
 from torch import nn as nn
 from torch.nn import functional as F
-from torch.nn import init as init
-from torch.nn.modules.batchnorm import _BatchNorm
+from torch.nn import init as init       # 初始化权重
+from torch.nn.modules.batchnorm import _BatchNorm       # _BatchNorm 是 PyTorch 中所有批归一化层的基类
 
-# from basicsr.ops.dcn import ModulatedDeformConvPack, modulated_deform_conv
+# from basicsr.ops.dcn import ModulatedDeformConvPack, modulated_deform_conv    # 可变形卷积
 from basicsr.utils import get_root_logger
 
 

@@ -117,7 +117,7 @@ class VGGFeatureExtractor(nn.Module):
                     continue
                 else:
                     # in some cases, we may want to change the default stride
-                    modified_net[k] = nn.MaxPool2d(kernel_size=2, stride=pooling_stride)
+                    modified_net[k] = nn.MaxPool2d(kernel_size=2, stride=pooling_stride)    # kernel 大小为 2x2
             else:
                 modified_net[k] = v
 
