@@ -108,6 +108,8 @@ class MLP(nn.Module):
 # 使用 输入特征的相对位置信息（如相对位置坐标）计算出与位置相关的偏置项，从而增强模型捕捉空间信息的能力。
 # 在多头注意力机制中，通常需要将位置关系纳入注意力计算中。
 # 传统方法可能通过固定的正弦和余弦位置编码实现，而动态位置偏置可以通过神经网络从数据中自动学习这些偏置。
+# 通常用于 Transformer 或 CrossFormer 等模型中，为注意力机制引入位置信息
+# 它的核心思想是通过一个可学习的网络生成相对位置偏置，从而增强模型对位置信息的感知能力。
 class DynamicPosBias(nn.Module): # 动态相对位置偏置（Dynamic Relative Position Bias）模块
     # The implementation builds on Crossformer code https://github.com/cheerss/CrossFormer/blob/main/models/crossformer.py
     """ Dynamic Relative Position Bias.
