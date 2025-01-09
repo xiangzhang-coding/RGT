@@ -57,7 +57,7 @@ def windows2img(img_splits_hw, H_sp, W_sp, H, W):
 
 
 class Gate(nn.Module):
-    def __init__(self, dim):
+    def __init__(self, dim):    # dim为输入张量的通道数的一半
         super().__init__()
         # dim 输入张量的通道数（C）。
         self.norm = nn.LayerNorm(dim)
@@ -108,7 +108,7 @@ class MLP(nn.Module):
 # 使用 输入特征的相对位置信息（如相对位置坐标）计算出与位置相关的偏置项，从而增强模型捕捉空间信息的能力。
 # 在多头注意力机制中，通常需要将位置关系纳入注意力计算中。
 # 传统方法可能通过固定的正弦和余弦位置编码实现，而动态位置偏置可以通过神经网络从数据中自动学习这些偏置。
-class DynamicPosBias(nn.Module):
+class DynamicPosBias(nn.Module): # 动态相对位置偏置（Dynamic Relative Position Bias）模块
     # The implementation builds on Crossformer code https://github.com/cheerss/CrossFormer/blob/main/models/crossformer.py
     """ Dynamic Relative Position Bias.
     Args:
@@ -125,7 +125,7 @@ class DynamicPosBias(nn.Module):
         # 这里的网络很奇怪，激活函数出现在线性层前面
         self.pos1 = nn.Sequential(
             nn.LayerNorm(self.pos_dim),
-            nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),  # 节约显存
             nn.Linear(self.pos_dim, self.pos_dim),
         )
         self.pos2 = nn.Sequential(
