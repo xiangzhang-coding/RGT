@@ -14,6 +14,6 @@ torch==1.9.0+cu111
 torchvision==0.10.0+cu111
 tqdm
 yapf        #Python 代码格式化工具
-timm        #timm (PyTorch Image Models) 是一个 PyTorch 图像模型库，由 Ross Wightman 开发，包含大量 预训练模型、模型结构与训练工具，主要用于 图像分类、目标检测和分割任务。timm 支持最新的 深度学习架构，如 ViT、Swin Transformer、EfficientNet、ConvNeXt 等。
+timm==0.9.16        #timm (PyTorch Image Models) 是一个 PyTorch 图像模型库，由 Ross Wightman 开发，包含大量 预训练模型、模型结构与训练工具，主要用于 图像分类、目标检测和分割任务。timm 支持最新的 深度学习架构，如 ViT、Swin Transformer、EfficientNet、ConvNeXt 等。
 einops      #高效的张量操作工具库
 h5py        #操作 HDF5 文件
