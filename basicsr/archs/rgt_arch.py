@@ -60,6 +60,10 @@ class Gate(nn.Module):
     def __init__(self, dim):    # dim为输入张量的通道数的一半
         super().__init__()
         # dim 输入张量的通道数（C）。
+        # nn.LayerNorm(dim) 对输入张量的 每个样本的特征维度 进行归一化处理。
+        # 具体来说，它会将输入张量沿着特定的维度 dim 进行标准化，使得每个特征的均值为 0，标准差为 1。
+        # 这个操作在训练过程中有助于提高模型的稳定性，减少梯度爆炸或消失的问题。
+        # 如果 elementwise_affine=True，那么标准化后的值会乘以一个可训练的缩放因子（γ）并加上一个偏移量（β）：
         self.norm = nn.LayerNorm(dim)
         # groups=dim(in_channels)：使每个通道独立卷积（Depthwise Convolution）
         self.conv = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, groups=dim) # DW Conv
@@ -68,6 +72,7 @@ class Gate(nn.Module):
         # Split,将输入张量 x 按最后一维（通道维度）均匀分成两部分。
         # chunk 函数用于将一个张量沿指定的维度分割成若干个子张量。
         # 这里有个问题，chunk 似乎不能均匀分？？？？？
+        # chunk是原地操作
         x1, x2 = x.chunk(2, dim = -1)
         B, N, C = x.shape
         x2 = self.conv(self.norm(x2).transpose(1, 2).contiguous().view(B, C//2, H, W)).flatten(2).transpose(-1, -2).contiguous()
@@ -162,6 +167,26 @@ class DynamicPosBias(nn.Module): # 动态相对位置偏置（Dynamic Relative P
 # 动态位置偏置（position_bias）在窗口内建模相对位置关系，并添加到注意力权重中。
 # 支持窗口移位操作，通过遮罩（mask）机制增强跨窗口的信息交互。
 class WindowAttention(nn.Module):
+    """
+            dim：输入特征的维度。
+
+            idx：窗口划分的模式索引（0 或 1），用于确定窗口的高度和宽度。
+
+            split_size：窗口的大小，默认为 [8, 8]。
+
+            dim_out：输出特征的维度，默认为 dim。
+
+            num_heads：注意力头的数量。
+
+            attn_drop：注意力权重的 Dropout 概率。
+
+            proj_drop：输出投影的 Dropout 概率。
+
+            qk_scale：缩放因子，用于调整注意力分数的尺度。
+
+            position_bias：是否使用相对位置偏置。
+    """
+
     def __init__(self, dim, idx, split_size=[8,8], dim_out=None, num_heads=6, attn_drop=0., proj_drop=0., qk_scale=None, position_bias=True):
         super().__init__()
         self.dim = dim
@@ -208,6 +233,8 @@ class WindowAttention(nn.Module):
 
         self.attn_drop = nn.Dropout(attn_drop)
 
+
+    # 将输入特征图从 (B, L, C) 转换为窗口形式 (B * num_windows, num_heads, H_sp * W_sp, C // num_heads)
     def im2win(self, x, H, W):
         B, N, C = x.shape
         x = x.transpose(-2,-1).contiguous().view(B, C, H, W)
@@ -219,6 +246,13 @@ class WindowAttention(nn.Module):
         """
         Input: qkv: (B, 3*L, C), H, W, mask: (B, N, N), N is the window size
         Output: x (B, H, W, C)
+
+        qkv：查询（query）、键（key）、值（value）组成的元组，形状为 (B, 3*L, C)，其中 L = H * W。
+
+        H 和 W：输入特征图的高度和宽度。
+
+        mask：用于 Shifted Window Attention 的掩码，形状为 (B, N, N)，其中 N = H_sp * W_sp。
+
         """
         q,k,v = qkv[0], qkv[1], qkv[2]
 
@@ -233,7 +267,7 @@ class WindowAttention(nn.Module):
         q = q * self.scale
         attn = (q @ k.transpose(-2, -1))  # B head N C @ B head C N --> B head N N
 
-        # calculate drpe
+        # calculate drpe, Dynamic Relative Position Encoding
         if self.position_bias:
             pos = self.pos(self.rpe_biases)
             # select position bias
