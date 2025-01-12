@@ -211,7 +211,11 @@ class WindowAttention(nn.Module):
 
         if self.position_bias:
             self.pos = DynamicPosBias(self.dim // 4, self.num_heads, residual=False)
-            # generate mother-set
+            # generate mother-set,
+            # "mother-set" 是用来生成 相对位置偏置（relative position bias） 的集合。
+            # 在计算机视觉中，尤其是在视觉变换器（Vision Transformer）等模型中，
+            # "mother-set" 是一种用于预定义相对位置偏置的方法。它可以看作是生成位置相关信息的基础集合，
+            # 在进一步计算中被用来生成每个位置之间的偏置。
             position_bias_h = torch.arange(1 - self.H_sp, self.H_sp)
             position_bias_w = torch.arange(1 - self.W_sp, self.W_sp)
             biases = torch.stack(torch.meshgrid([position_bias_h, position_bias_w]))
@@ -219,17 +223,44 @@ class WindowAttention(nn.Module):
             self.register_buffer('rpe_biases', biases)
 
             # get pair-wise relative position index for each token inside the window
+            # 在窗口注意力机制（Window Attention）中，一个窗口通常包含多个像素点，经过处理后，
+            # 这些像素点被转换成特征向量，而这些特征向量就可以被视作“token”。
+            # 假设我们有一个图像，它的尺寸是 32x32 像素。在窗口注意力机制中，这个图像可能会被划分为多个 8x8 的窗口。
+            # 每个窗口有 64 个像素点，但这些像素点会通过一些变换（比如卷积或变换操作）被转换成一个更高维度的特征向量。
+            # 每个特征向量就成为一个 token。
             coords_h = torch.arange(self.H_sp)
             coords_w = torch.arange(self.W_sp)
             coords = torch.stack(torch.meshgrid([coords_h, coords_w]))
             coords_flatten = torch.flatten(coords, 1)
             relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]
             relative_coords = relative_coords.permute(1, 2, 0).contiguous()
+            # 下面两行使得相对位置非负，从0开始
             relative_coords[:, :, 0] += self.H_sp - 1
             relative_coords[:, :, 1] += self.W_sp - 1
+            # relative_coords[:, :, 0]：表示**垂直方向（高度方向）**的相对位置差异。也就是说，对于两个 token，它们在高度（行方向）上的相对位置差异。
+            # relative_coords[:, :, 1]：表示**水平方向（宽度方向）**的相对位置差异。也就是说，对于两个 token，它们在宽度（列方向）上的相对位置差异。
+
+            # 垂直方向（在图像中通常对应于行）的变化可能对模型的表现更重要，尤其是在图像的结构中，
+            # 像素之间的垂直关系常常影响更大。为了强调这种关系，可能在垂直方向增加了缩放系数。
+            # 水平方向本身也许对某些任务来说不需要那么强的处理，因此没有进行额外的缩放。乘了15倍
+
             relative_coords[:, :, 0] *= 2 * self.W_sp - 1
             relative_position_index = relative_coords.sum(-1)
+            # 在 Transformer 中，位置编码（positional encoding）可以作为缓冲区。
             self.register_buffer('relative_position_index', relative_position_index)
+
+            # relative_position_index 主要用于捕捉相对位置的索引。
+            # 它表示窗口内每个像素点之间的相对位置关系，并且在计算注意力时，
+            # 作为索引来查找预先计算好的相对位置的偏置（relative position bias）。
+
+            # 相对位置的偏置：它是通过 relative_position_index 索引计算出来的偏置值，
+            # 用于在注意力计算时调整注意力权重。具体地说，bias 是相对位置编码的实际数值，
+            # 这些数值会在注意力计算中作为加性项被加入。
+
+            # 加性项影响注意力：bias 会影响注意力的得分（score），
+            # 使得不同位置之间的注意力值根据它们的相对位置有所变化。
+            # 对于距离较远的token，bias 通常会增大其注意力差异（例如使其权重减小），
+            # 而对于距离较近的token，bias 会减小其差异（使其权重增加）。
 
         self.attn_drop = nn.Dropout(attn_drop)
 
